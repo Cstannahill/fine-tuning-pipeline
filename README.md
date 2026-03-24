@@ -57,7 +57,6 @@ fine-tuning/
 ├── data/                       # Sample datasets
 │   ├── alpaca_en_demo.json
 │   ├── alpaca_zh_demo.json
-│   ├── bluemoon_sharegpt.jsonl
 │   └── ...
 │
 ├── outputs/                    # Training outputs (auto-created)
