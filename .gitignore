@@ -1,11 +1,3 @@
-# Roleplay datasets (personal/sensitive content)
-data/rp_chat_long.jsonl
-data/rp_rizzlaa.json
-data/rp.jsonl
-data/rp2.jsonl
-data/rpc.jsonl
-data/sonnet35-charcard-roleplay-sharegpt.jsonl
-
 # Python
 __pycache__/
 *.py[cod]
