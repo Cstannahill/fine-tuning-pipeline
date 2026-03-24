@@ -2,8 +2,8 @@
 
 # Model Configuration
 model:
-  name: "/mnt/s/Code/Models/UC/Qwen3.5/Qwen3.5-0.8B-UC" # Base model to fine-tune
-  max_seq_length: 4096
+  name: "microsoft/phi-2" # Base model to fine-tune (replace with your preferred model)
+  max_seq_length: 2048
   load_in_4bit: true # Set to false for LoRA, true for QLoRA
   dtype: null # Auto-detect (bfloat16 for Ampere+, float16 otherwise)
 
@@ -30,7 +30,7 @@ lora:
 dataset:
   # Method 1: Use dataset registry (recommended)
   # Simply specify the dataset name from dataset_info.json
-  dataset_name: "sonnet35-charcard-roleplay-sharegpt" # Or any dataset from registry
+  dataset_name: "alpaca_en" # Example: Alpaca English dataset
 
   # Registry path (optional, defaults to dataset_info.json in project root)
   registry_path: "dataset_info.json"
@@ -42,7 +42,7 @@ dataset:
   test_size: 0.1 # Validation split ratio
 # Training Configuration
 training:
-  output_dir: "/mnt/s/Code/Models/fine-tuned/outputs"
+  output_dir: "./outputs" # Directory to save training outputs
   num_train_epochs: 2
   per_device_train_batch_size: 8
   per_device_eval_batch_size: 2
@@ -102,9 +102,9 @@ evaluation:
 
 # Output Configuration
 output:
-  base_dir: "/mnt/s/Code/Models/fine-tuned/outputs"
-  adapter_name: "Qwen3.5-0.8B-UC-Sonnet-RP-Lora"
-  merged_model_name: "Qwen3.5-0.8B-UC-Sonnet-RP-Merged"
+  base_dir: "./outputs"
+  adapter_name: "my-model-lora-adapter" # Name for saved LoRA adapter
+  merged_model_name: "my-model-merged" # Name for merged model
   auto_merge: true # Automatically merge after training
   push_to_hub: false # Push to HuggingFace Hub
   hub_model_id: null # HuggingFace model ID

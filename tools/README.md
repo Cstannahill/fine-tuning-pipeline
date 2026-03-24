@@ -4,11 +4,11 @@ This directory contains standalone utility scripts for managing datasets and mod
 
 ## Overview
 
-| Tool | Purpose | Status |
-|------|---------|--------|
-| `dataset_tool.py` | Browse, search, and inspect the dataset registry | ✅ Core |
-| `dataset_inspector.py` | **NEW** – Inspect local datasets and auto-register | ✨ New |
-| `merge_adapter.py` | **NEW** – Merge LoRA adapters into standalone models | ✨ New |
+| Tool                   | Purpose                                              | Status  |
+| ---------------------- | ---------------------------------------------------- | ------- |
+| `dataset_tool.py`      | Browse, search, and inspect the dataset registry     | ✅ Core |
+| `dataset_inspector.py` | **NEW** – Inspect local datasets and auto-register   | ✨ New  |
+| `merge_adapter.py`     | **NEW** – Merge LoRA adapters into standalone models | ✨ New  |
 
 ---
 
@@ -51,18 +51,17 @@ The registry includes datasets in several categories:
 ### Example Output
 
 ```
-Available Datasets (142 total)
+Available Datasets (100+ total)
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┓
 ┃ Name                   ┃ Source              ┃ Format    ┃ Type  ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━┩
 │ alpaca_en              │ HuggingFace         │ alpaca    │ SFT   │
 │ alpaca_zh              │ HuggingFace         │ alpaca    │ SFT   │
-│ bluemoon_sharegpt      │ Local               │ sharegpt  │ SFT   │
-│ claude-opus-reasoning  │ HuggingFace         │ sharegpt  │ SFT   │
-│ gpt-5-2-reasoning      │ HuggingFace         │ sharegpt  │ SFT   │
-│ dpo_en_demo            │ Local               │ alpaca    │ DPO   │
-│ kto_en_demo            │ Local               │ alpaca    │ KTO   │
-│ mllm_demo              │ Local               │ alpaca    │ SFT   │
+│ codealpaca             │ HuggingFace         │ alpaca    │ SFT   │
+│ slimorca               │ HuggingFace         │ sharegpt  │ SFT   │
+│ mathinstruct           │ HuggingFace         │ alpaca    │ SFT   │
+│ ultrafeedback          │ HuggingFace         │ ranking   │ DPO   │
+│ llama-2-7b             │ HuggingFace         │ text      │ PT    │
 └────────────────────────┴─────────────────────┴───────────┴───────┘
 ```
 
@@ -90,6 +89,7 @@ python tools/dataset_inspector.py data/my_dataset.jsonl
 ```
 
 **Output shows:**
+
 - File path and type
 - Total number of records
 - Sample records (first 5 by default)
@@ -135,19 +135,20 @@ python tools/dataset_inspector.py data/my_dataset.jsonl --sample-size 20
 
 ### Supported Formats
 
-| Format | Extension | Example |
-|--------|-----------|---------|
-| **JSON Array** | `.json` | `[{...}, {...}]` |
-| **JSON Lines** | `.jsonl` | One JSON object per line |
-| **CSV** | `.csv` | With header row |
-| **Plain Text** | `.txt` | One record per line |
-| **Parquet** | `.parquet` | Arrow format |
+| Format         | Extension  | Example                  |
+| -------------- | ---------- | ------------------------ |
+| **JSON Array** | `.json`    | `[{...}, {...}]`         |
+| **JSON Lines** | `.jsonl`   | One JSON object per line |
+| **CSV**        | `.csv`     | With header row          |
+| **Plain Text** | `.txt`     | One record per line      |
+| **Parquet**    | `.parquet` | Arrow format             |
 
 ### Auto-Detection
 
 The tool automatically detects and configures:
 
 #### Alpaca Format
+
 Expects: `instruction`, `input`, `output` fields
 
 ```json
@@ -159,6 +160,7 @@ Expects: `instruction`, `input`, `output` fields
 ```
 
 Generates config:
+
 ```yaml
 formatting: alpaca
 columns:
@@ -168,18 +170,20 @@ columns:
 ```
 
 #### ShareGPT Format
+
 Expects: `conversations` or `messages` field with role/content pairs
 
 ```json
 {
   "conversations": [
-    {"from": "human", "value": "Hello"},
-    {"from": "gpt", "value": "Hi there"}
+    { "from": "human", "value": "Hello" },
+    { "from": "gpt", "value": "Hi there" }
   ]
 }
 ```
 
 Generates config:
+
 ```yaml
 formatting: sharegpt
 columns:
@@ -191,10 +195,11 @@ tags:
 ```
 
 #### Text Format
+
 Falls back to simple text field
 
 ```json
-{"text": "Some training text"}
+{ "text": "Some training text" }
 ```
 
 Or plain text file with one line per record.
@@ -249,7 +254,7 @@ Merge base model with adapter:
 
 ```bash
 python tools/merge_adapter.py \
-  meta-llama/llama-2-7b \
+  microsoft/phi-2 \
   outputs/20260322_141603/adapter_model \
   outputs/merged_model
 ```
@@ -258,7 +263,7 @@ python tools/merge_adapter.py \
 
 ```bash
 python tools/merge_adapter.py \
-  ./base_models/mistral-7b-v0.3 \
+  ./base_models/phi-2 \
   ./outputs/20260322_141603/checkpoints/checkpoint-400 \
   ./outputs/merged_model
 ```
@@ -351,28 +356,28 @@ The appropriate model loader is auto-detected based on model architecture.
 python main.py --config configs/default.yaml
 
 # Step 2: Check training outputs
-ls outputs/20260322_141603/
+ls outputs/YYYYMMDD_HHMMSS/
 # → adapter_model/, checkpoints/, config.yaml, etc.
 
 # Step 3: Merge the adapter
 python tools/merge_adapter.py \
-  unsloth/mistral-7b-v0.3 \
-  outputs/20260322_141603/adapter_model \
-  outputs/20260322_141603/merged_model
+  microsoft/phi-2 \
+  outputs/YYYYMMDD_HHMMSS/adapter_model \
+  outputs/YYYYMMDD_HHMMSS/merged_model
 
 # Step 4: Test the merged model
 python -c "
 from transformers import AutoModelForCausalLM, AutoTokenizer
-model = AutoModelForCausalLM.from_pretrained('outputs/20260322_141603/merged_model')
-tokenizer = AutoTokenizer.from_pretrained('outputs/20260322_141603/merged_model')
+model = AutoModelForCausalLM.from_pretrained('outputs/YYYYMMDD_HHMMSS/merged_model')
+tokenizer = AutoTokenizer.from_pretrained('outputs/YYYYMMDD_HHMMSS/merged_model')
 print('✓ Merged model loads successfully!')
 "
 
-# Step 5: Push to HuggingFace Hub
+# Step 5: Push to HuggingFace Hub (optional)
 python -c "
 from transformers import AutoModelForCausalLM, AutoTokenizer
-model = AutoModelForCausalLM.from_pretrained('outputs/20260322_141603/merged_model')
-tokenizer = AutoTokenizer.from_pretrained('outputs/20260322_141603/merged_model')
+model = AutoModelForCausalLM.from_pretrained('outputs/YYYYMMDD_HHMMSS/merged_model')
+tokenizer = AutoTokenizer.from_pretrained('outputs/YYYYMMDD_HHMMSS/merged_model')
 model.push_to_hub('username/my-finetuned-model')
 tokenizer.push_to_hub('username/my-finetuned-model')
 "
@@ -389,12 +394,12 @@ tokenizer.push_to_hub('username/my-finetuned-model')
 
 ### Common Issues & Solutions
 
-| Issue | Solution |
-|-------|----------|
-| CUDA OOM during merge | Use `--device-map cpu` (slower but works) |
-| Model loading fails | Add `--trust-remote-code` for custom models |
-| Tokenizer not found | Ensure adapter dir has `special_tokens_map.json` |
-| Wrong model loader | Auto-detection handles 99% of cases; if not, check model config |
+| Issue                 | Solution                                                        |
+| --------------------- | --------------------------------------------------------------- |
+| CUDA OOM during merge | Use `--device-map cpu` (slower but works)                       |
+| Model loading fails   | Add `--trust-remote-code` for custom models                     |
+| Tokenizer not found   | Ensure adapter dir has `special_tokens_map.json`                |
+| Wrong model loader    | Auto-detection handles 99% of cases; if not, check model config |
 
 ---
 
@@ -469,8 +474,7 @@ dataset:
 # For inference in main pipeline --eval-only
 model:
   name: "outputs/merged_model"
-  load_in_4bit: false  # Merged models don't need quantization
+  load_in_4bit: false # Merged models don't need quantization
 ```
 
 ---
-

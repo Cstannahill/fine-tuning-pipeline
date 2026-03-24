@@ -45,7 +45,7 @@ python -c "import torch; print('GPU Ready:', torch.cuda.is_available())"
 ### 2. Start Training
 
 ```bash
-# Train with default config (Mistral-7B on Alpaca dataset)
+# Train with default config (example model on Alpaca dataset)
 python main.py --config configs/default.yaml
 ```
 
@@ -103,7 +103,7 @@ python main.py --config configs/default.yaml
 ```bash
 # Create a standalone, deployable model
 python tools/merge_adapter.py \
-  unsloth/mistral-7b-v0.3 \
+  microsoft/phi-2 \
   outputs/YYYYMMDD_HHMMSS/adapter_model \
   outputs/YYYYMMDD_HHMMSS/merged_model
 
@@ -121,12 +121,12 @@ Choose based on your GPU and time constraints.
 
 ```yaml
 model:
-  name: "unsloth/mistral-7b-v0.3"
+  name: "microsoft/phi-2" # Small, fast model for testing
   load_in_4bit: true
 
 dataset:
   dataset_name: "alpaca_en"
-  max_samples: 100  # Small sample
+  max_samples: 100 # Small sample for quick testing
 
 training:
   num_train_epochs: 1
@@ -138,7 +138,7 @@ training:
 
 ```yaml
 model:
-  name: "unsloth/mistral-7b-v0.3"
+  name: "microsoft/phi-2" # Or any suitable model
   load_in_4bit: true
 
 dataset:
@@ -154,7 +154,7 @@ training:
 
 ```yaml
 model:
-  name: "unsloth/mistral-7b-v0.3"
+  name: "microsoft/phi-2"
   load_in_4bit: true
 
 lora:
@@ -192,13 +192,13 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
 ## 🐛 Quick Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
+| Problem                | Solution                                                               |
+| ---------------------- | ---------------------------------------------------------------------- |
 | **CUDA Out of Memory** | Reduce `per_device_train_batch_size` to 1, or use `load_in_4bit: true` |
-| **GPU not found** | Run: `nvidia-smi` to verify GPU drivers |
-| **Dataset not found** | Ensure file path is correct, or use `dataset_tool.py list` |
-| **Slow training** | Reduce `max_seq_length` or use smaller model |
-| **Model won't merge** | Add `--trust-remote-code` flag to merge_adapter.py |
+| **GPU not found**      | Run: `nvidia-smi` to verify GPU drivers                                |
+| **Dataset not found**  | Ensure file path is correct, or use `dataset_tool.py list`             |
+| **Slow training**      | Reduce `max_seq_length` or use smaller model                           |
+| **Model won't merge**  | Add `--trust-remote-code` flag to merge_adapter.py                     |
 
 ---
 
@@ -218,7 +218,7 @@ That's it! You now have:
 
 ✅ Environment set up  
 ✅ First model training  
-✅ Tools for managing datasets and models  
+✅ Tools for managing datasets and models
 
 **Next:** Customize your config and train your own models!
 

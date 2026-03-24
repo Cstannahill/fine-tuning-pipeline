@@ -732,72 +732,8 @@
     "folder": "python"
   },
 
-  "nsfw_reddit": {
-    "file_name": "nsfw_reddit.jsonl",
-    "columns": {
-      "instruction": "instruction",
-      "response": "output"
-    }
-  },
-
-  "gpt-5.2-reasoning": {
-    "file_name": "gpt-5.2-reasoning.jsonl",
-    "formatting": "sharegpt",
-    "columns": {
-      "messages": "messages"
-    },
-    "tags": {
-      "role_tag": "role",
-      "content_tag": "content",
-      "user_tag": "user",
-      "assistant_tag": "assistant",
-      "system_tag": "system"
-    }
-  },
-  "claude-opus-4.5-reasoning": {
-    "file_name": "claude-opus-4.5-reasoning.jsonl",
-    "formatting": "sharegpt",
-    "columns": {
-      "messages": "messages"
-    },
-    "tags": {
-      "role_tag": "role",
-      "content_tag": "content",
-      "user_tag": "user",
-      "assistant_tag": "assistant",
-      "system_tag": "system"
-    }
-  },
-  "gemini-pro-3-reasoning": {
-    "file_name": "gemini-pro-3-reasoning.jsonl",
-    "formatting": "sharegpt",
-    "columns": {
-      "messages": "messages"
-    },
-    "tags": {
-      "role_tag": "role",
-      "content_tag": "content",
-      "user_tag": "user",
-      "assistant_tag": "assistant",
-      "system_tag": "system"
-    }
-  },
-  "claude-sonnet-4.5-reasoning": {
-    "file_name": "claude-sonnet-4.5-reasoning.jsonl",
-    "formatting": "sharegpt",
-    "columns": {
-      "messages": "messages"
-    },
-    "tags": {
-      "role_tag": "role",
-      "content_tag": "content",
-      "user_tag": "user",
-      "assistant_tag": "assistant",
-      "system_tag": "system"
-    }
-  },
-  "combined_reasoning-gpt-sonnet-gemini-opus": {
-    "file_name": "data/combined-reasoning-gpt-sonnet-gemini-opus.jsonl",
+  "reasoning_tasks": {
+    "hf_hub_url": "llamafactory/OpenThoughts-114k",
     "formatting": "sharegpt",
     "columns": {
       "messages": "messages"

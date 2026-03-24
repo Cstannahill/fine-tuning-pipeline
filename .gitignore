@@ -5,7 +5,7 @@ data/rp.jsonl
 data/rp2.jsonl
 data/rpc.jsonl
 data/sonnet35-charcard-roleplay-sharegpt.jsonl
-
+configs/default-qwen35.yaml
 # Python
 __pycache__/
 *.py[cod]

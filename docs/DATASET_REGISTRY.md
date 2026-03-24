@@ -73,12 +73,12 @@ python main.py --config configs/default.yaml
 
 Your `dataset_info.json` includes:
 
-- **52 Instruction datasets** (alpaca, belle, codealpaca, mathinstruct, etc.)
-- **15 Conversation datasets** (sharegpt, ultrachat, lmsys_chat, etc.)
-- **12 Ranking/DPO datasets** (ultrafeedback, nectar, dpo_mix, etc.)
+- **50+ Instruction datasets** (alpaca, belle, codealpaca, mathinstruct, etc.)
+- **15+ Conversation datasets** (sharegpt, ultrachat, lmsys_chat, etc.)
+- **12+ Ranking/DPO datasets** (ultrafeedback, nectar, dpo_mix, etc.)
 - **8 Multimodal datasets** (llava, pokemon_cap, etc.)
 - **11 Pretraining datasets** (wikipedia, refinedweb, fineweb, etc.)
-- **Your custom datasets** (rp, rp2, rpc, nsfw_reddit, etc.)
+- **Demo datasets** (sample data for testing and development)
 
 ## CLI Tool Commands
 
@@ -154,7 +154,7 @@ training:
 
 ```yaml
 dataset:
-  dataset_name: "rp" # From your dataset_info.json
+  dataset_name: "my_dataset" # From your dataset_info.json
 ```
 
 ## Adding Your Datasets

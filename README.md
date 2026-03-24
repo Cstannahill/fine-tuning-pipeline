@@ -140,18 +140,18 @@ Edit `configs/default.yaml`:
 
 ```yaml
 model:
-  name: "unsloth/mistral-7b-v0.3"  # Or any HF model
-  load_in_4bit: true                # Use 4-bit quantization
+  name: "microsoft/phi-2" # Or any HuggingFace model
+  load_in_4bit: true # Use 4-bit quantization (QLoRA)
 
 dataset:
-  dataset_name: "alpaca_en"         # From registry
-  max_samples: null                 # Use all samples
+  dataset_name: "alpaca_en" # Example: Alpaca English dataset
+  max_samples: null # Use all samples
 
 training:
   num_train_epochs: 3
   per_device_train_batch_size: 4
   learning_rate: 2.0e-4
-  output_dir: "outputs"
+  output_dir: "./outputs"
 ```
 
 #### 3. Start Training
@@ -191,6 +191,7 @@ python tools/dataset_tool.py list --type ranking
 ```
 
 **Supported Dataset Types:**
+
 - **SFT** – Supervised fine-tuning (instruction, input, output)
 - **Ranking** – Preference learning (DPO, KTO, RLHF)
 - **Chat** – Conversation datasets (ShareGPT format)
@@ -222,6 +223,7 @@ python tools/dataset_inspector.py data/large_dataset.jsonl --sample-size 10
 ```
 
 **Supported Formats:**
+
 - JSON arrays and objects
 - JSONL (one record per line)
 - CSV with headers
@@ -229,6 +231,7 @@ python tools/dataset_inspector.py data/large_dataset.jsonl --sample-size 10
 - Parquet files
 
 **Auto-Detection:**
+
 - Alpaca format (instruction, input, output)
 - ShareGPT format (messages array)
 - Simple text format (single text field)
@@ -242,38 +245,40 @@ Merge trained LoRA adapters with base models into standalone, deployable models:
 ```bash
 # Basic merge
 python tools/merge_adapter.py \
-  meta-llama/llama-2-7b \
+  microsoft/phi-2 \
   outputs/20260322_141603/checkpoints/checkpoint-400 \
   outputs/merged_model
 
 # With custom dtype
 python tools/merge_adapter.py \
-  meta-llama/llama-2-7b \
+  microsoft/phi-2 \
   outputs/adapter_model \
   outputs/merged_model \
   --dtype bfloat16
 
 # With custom device mapping
 python tools/merge_adapter.py \
-  meta-llama/llama-2-7b \
+  microsoft/phi-2 \
   outputs/adapter_model \
   outputs/merged_model \
   --device-map cpu
 
 # Allow custom model code
 python tools/merge_adapter.py \
-  custom-model \
+  your-org/custom-model \
   outputs/adapter_model \
   outputs/merged_model \
   --trust-remote-code
 ```
 
 **Options:**
+
 - `--dtype` – `auto` (default), `float32`, `float16`, `bfloat16`
 - `--device-map` – `auto` (default), `cpu`, `cuda`, or specific mapping
 - `--trust-remote-code` – Allow custom model implementations from Hub
 
 **Output:**
+
 - Merged model with all weights integrated
 - Tokenizer and processor (if applicable)
 - Sidecar files (config, READMEs, etc.)
@@ -322,42 +327,45 @@ Resume training from a specific checkpoint.
 
 ```yaml
 model:
-  name: "meta-llama/llama-2-7b-hf"           # HuggingFace model ID
-  max_seq_length: 4096                        # Context window
-  load_in_4bit: true                          # 4-bit quantization (QLoRA)
-  
+  name: "microsoft/phi-2" # HuggingFace model ID (example)
+  max_seq_length: 2048 # Context window
+  load_in_4bit: true # 4-bit quantization (QLoRA)
+
   # LoRA configuration
   lora:
-    r: 16                                     # LoRA rank
-    lora_alpha: 32                            # LoRA alpha (scaling)
-    lora_dropout: 0.05                        # Dropout for LoRA layers
-    bias: "none"                              # Bias handling: none, all, lora_only
-    target_modules: ["q_proj", "v_proj"]      # Auto-detected if omitted
-    task_type: "CAUSAL_LM"                    # Task type for PEFT
+    r: 16 # LoRA rank
+    lora_alpha: 32 # LoRA alpha (scaling)
+    lora_dropout: 0.05 # Dropout for LoRA layers
+    bias: "none" # Bias handling: none, all, lora_only
+    target_modules: ["q_proj", "v_proj"] # Modules to apply LoRA to
+    task_type: "CAUSAL_LM" # Task type for PEFT
 ```
 
 ### Dataset Configuration
 
 **Using Registry (Recommended):**
+
 ```yaml
 dataset:
-  dataset_name: "alpaca_en"                   # From dataset_info.json
-  max_samples: 1000                           # Optional: limit samples
+  dataset_name: "alpaca_en" # From dataset_info.json
+  max_samples: 1000 # Optional: limit samples
 ```
 
 **Using HuggingFace Dataset:**
+
 ```yaml
 dataset:
   name: "yahma/alpaca-cleaned"
   split: "train"
-  subset: null                                # For multi-split datasets
+  subset: null # For multi-split datasets
 ```
 
 **Using Local Files:**
+
 ```yaml
 dataset:
   name: "local_dataset"
-  data_path: "data/my_dataset.jsonl"          # Local file path
+  data_path: "data/my_dataset.jsonl" # Local file path
   split: "train"
 ```
 
@@ -376,16 +384,16 @@ training:
   warmup_steps: 100
   weight_decay: 0.01
   max_grad_norm: 1.0
-  
+
   # Checkpointing
   save_steps: 100
   eval_steps: 100
   save_total_limit: 3
   resume_from_checkpoint: null
-  
+
   # Mixed precision
   fp16: false
-  bf16: true                                  # Recommended for A100/H100
+  bf16: true # Recommended for A100/H100
 ```
 
 See [`docs/TRAINING_CONFIG.md`](docs/TRAINING_CONFIG.md) for comprehensive reference.
@@ -430,15 +438,18 @@ outputs/20260322_141603/
 ```python
 from unsloth import FastLanguageModel
 
+# Load the fine-tuned adapter
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name="outputs/20260322_141603/adapter_model",
+    model_name="outputs/YYYYMMDD_HHMMSS/adapter_model",
     max_seq_length=2048,
     dtype=None,
     load_in_4bit=True,
 )
 
+# Prepare for inference
 FastLanguageModel.for_inference(model)
 
+# Generate text
 inputs = tokenizer(
     "Your prompt here",
     return_tensors="pt",
@@ -460,15 +471,17 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
+# Load the merged model
 model = AutoModelForCausalLM.from_pretrained(
-    "outputs/20260322_141603/merged_model",
+    "outputs/YYYYMMDD_HHMMSS/merged_model",
     device_map="auto",
     torch_dtype="auto",
 )
 tokenizer = AutoTokenizer.from_pretrained(
-    "outputs/20260322_141603/merged_model"
+    "outputs/YYYYMMDD_HHMMSS/merged_model"
 )
 
+# Generate text
 inputs = tokenizer("Your prompt", return_tensors="pt").to(model.device)
 outputs = model.generate(**inputs, max_new_tokens=128)
 print(tokenizer.decode(outputs[0], skip_special_tokens=True))
@@ -501,6 +514,7 @@ model.push_to_hub_merged(
 ### Real-Time Metrics
 
 The CLI displays:
+
 - Training/eval loss (batch-level)
 - Learning rate schedule
 - GPU memory usage
@@ -568,6 +582,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python main.py --config configs/default.yaml
 ### Custom Models
 
 Supported model architectures:
+
 - Llama (Meta)
 - Mistral (Mistral AI)
 - Qwen (Alibaba)
@@ -641,13 +656,13 @@ Shows detected format, sample records, and inferred configuration.
 
 ## 📋 System Requirements
 
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| GPU Memory | 12GB | 24GB+ |
-| RAM | 16GB | 32GB+ |
-| Storage | 50GB | 100GB+ |
-| CUDA | 11.8 | 12.0+ |
-| Python | 3.8 | 3.10+ |
+| Component  | Minimum | Recommended |
+| ---------- | ------- | ----------- |
+| GPU Memory | 12GB    | 24GB+       |
+| RAM        | 16GB    | 32GB+       |
+| Storage    | 50GB    | 100GB+      |
+| CUDA       | 11.8    | 12.0+       |
+| Python     | 3.8     | 3.10+       |
 
 ### Tested Combinations
 
@@ -663,6 +678,7 @@ Shows detected format, sample records, and inferred configuration.
 ### v1.0.0 (Current)
 
 **New Features:**
+
 - ✨ Dataset Inspector tool for automatic dataset registration
 - ✨ Standalone Adapter Merger utility
 - 🎯 Improved CLI with better error handling
@@ -670,6 +686,7 @@ Shows detected format, sample records, and inferred configuration.
 - 🔧 Better configuration validation
 
 **Improvements:**
+
 - Better progress tracking
 - Faster data loading with caching
 - Improved memory management
