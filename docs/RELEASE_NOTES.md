@@ -11,6 +11,7 @@ This is the inaugural production release of the Unsloth Fine-tuning Pipeline, fe
 ## 🎉 Major Features
 
 ### Core Training System
+
 - ✅ **Robust LoRA/QLoRA Implementation** – Parameter-efficient fine-tuning with automatic quantization
 - ✅ **Config-Driven Architecture** – YAML-based configuration with sensible defaults
 - ✅ **Rich CLI Experience** – Beautiful terminal UI with progress tracking, ETA, and metrics
@@ -18,6 +19,7 @@ This is the inaugural production release of the Unsloth Fine-tuning Pipeline, fe
 - ✅ **Comprehensive Evaluation** – Built-in metrics: perplexity, BLEU, ROUGE
 
 ### Dataset Management System
+
 - ✅ **Pre-Configured Registry** – 100+ pre-configured datasets from `dataset_info.json`
 - ✅ **Dataset Tool CLI** – Browse, search, and inspect available datasets
 - ✅ **Dataset Inspector** ⭐ NEW – Automatically detect and register local datasets
@@ -25,12 +27,14 @@ This is the inaugural production release of the Unsloth Fine-tuning Pipeline, fe
 - ✅ **Format Auto-Detection** – Identifies Alpaca, ShareGPT, and text formats automatically
 
 ### Model Management
+
 - ✅ **Multiple Save Formats** – Adapters, merged models, quantized variants
 - ✅ **Adapter Merger Tool** ⭐ NEW – Merge trained adapters into standalone models
 - ✅ **HuggingFace Integration** – Direct Hub integration for model pushing
 - ✅ **Checkpoint Management** – Automatic saving, resumption, and cleanup
 
 ### Infrastructure
+
 - ✅ **Docker Support** – Containerized deployment ready
 - ✅ **WSL/Linux/Windows** – Cross-platform compatibility
 - ✅ **Modular Code** – Clean separation of concerns for extensibility
@@ -55,6 +59,7 @@ python tools/dataset_inspector.py data/my_dataset.jsonl --register --name my_dat
 ```
 
 **Features:**
+
 - Supports JSON, JSONL, CSV, TXT, and Parquet formats
 - Auto-detects Alpaca, ShareGPT, and text formats
 - Shows sample records and inferred configuration
@@ -73,6 +78,7 @@ python tools/merge_adapter.py \
 ```
 
 **Features:**
+
 - Automatic model loader selection (causal LM, seq2seq, vision-language)
 - Custom dtype support (float32, float16, bfloat16)
 - Flexible device mapping (GPU/CPU balance)
@@ -108,16 +114,19 @@ python tools/merge_adapter.py \
 ## 🔄 Improvements
 
 ### Performance
+
 - **Faster data loading** – Caching and optimized preprocessing
 - **Better memory management** – More efficient VRAM usage
 - **Improved checkpoint handling** – Faster resumption from checkpoints
 
 ### User Experience
+
 - **Better CLI output** – More readable progress, cleaner formatting
 - **Informative errors** – Clear guidance when things go wrong
 - **Comprehensive help** – Better --help messages and documentation
 
 ### Code Quality
+
 - **Type hints** – Better IDE support and code clarity
 - **Modular design** – Easier to extend and maintain
 - **Better logging** – Detailed debug information available
@@ -128,21 +137,23 @@ python tools/merge_adapter.py \
 
 Successfully tested on:
 
-| Hardware | GPU | VRAM | Models | Status |
-|----------|-----|------|--------|--------|
-| A100 | NVIDIA A100 | 80GB | Llama-70B, GPT-style (full FT) | ✅ |
-| H100 | NVIDIA H100 | 80GB | Llama-70B, QWen-72B | ✅ |
-| RTX 4090 | NVIDIA RTX 4090 | 24GB | Mistral-7B, QLoRA | ✅ |
-| RTX 3090 | NVIDIA RTX 3090 | 24GB | Mistral-7B, QLoRA | ✅ |
-| T4 | Google T4 | 16GB | Mistral-7B-small, QLoRA | ✅ |
+| Hardware | GPU             | VRAM | Models                         | Status |
+| -------- | --------------- | ---- | ------------------------------ | ------ |
+| A100     | NVIDIA A100     | 80GB | Llama-70B, GPT-style (full FT) | ✅     |
+| H100     | NVIDIA H100     | 80GB | Llama-70B, QWen-72B            | ✅     |
+| RTX 4090 | NVIDIA RTX 4090 | 24GB | Mistral-7B, QLoRA              | ✅     |
+| RTX 3090 | NVIDIA RTX 3090 | 24GB | Mistral-7B, QLoRA              | ✅     |
+| T4       | Google T4       | 16GB | Mistral-7B-small, QLoRA        | ✅     |
 
 ### Operating Systems
+
 - ✅ Ubuntu 20.04, 22.04, 24.04
 - ✅ WSL2 (Windows with Ubuntu)
 - ✅ macOS (CPU-only, not GPU)
 - ✅ Docker (any platform)
 
 ### Python & Dependencies
+
 - ✅ Python 3.8, 3.9, 3.10, 3.11, 3.12
 - ✅ CUDA 11.8, 12.0, 12.1
 - ✅ PyTorch 2.0+
@@ -189,18 +200,21 @@ As a new release, this includes fixes for issues discovered during development:
 ## 🎯 What's Next (Roadmap)
 
 ### v1.1.0 (Planned)
+
 - [ ] DPO/KTO/RLHF training support
 - [ ] Multi-node distributed training guide
 - [ ] Custom evaluation metrics framework
 - [ ] Web UI for configuration
 
 ### v1.2.0 (Planned)
+
 - [ ] Model quantization (GPTQ, AWQ)
 - [ ] Continuous evaluation during training
 - [ ] Integration with Weights & Biases
 - [ ] MLflow experiment tracking
 
 ### v2.0.0 (Planned)
+
 - [ ] Support for other fine-tuning methods (IA³, LyCoris)
 - [ ] Multi-task learning
 - [ ] Advanced dataset augmentation
@@ -211,6 +225,7 @@ As a new release, this includes fixes for issues discovered during development:
 ## 🙏 Credits
 
 Built with:
+
 - [Unsloth](https://github.com/unslothai/unsloth) – Fast LoRA implementation
 - [HuggingFace Transformers](https://huggingface.co/transformers/) – Core model utilities
 - [PEFT](https://github.com/huggingface/peft) – Parameter-efficient fine-tuning
@@ -237,7 +252,7 @@ MIT License – See LICENSE file for details
 
 New to the project? Start here:
 
-1. **Quick Setup** – See [QUICKSTART.md](QUICKSTART.md)
+1. **Quick Setup** – See [docs/QUICKSTART.md](docs/QUICKSTART.md)
 2. **Full Guide** – See [README.md](README.md)
 3. **Tools Overview** – See [tools/README.md](tools/README.md)
 4. **Configuration** – See [docs/TRAINING_CONFIG.md](docs/TRAINING_CONFIG.md)

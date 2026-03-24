@@ -146,13 +146,13 @@ pylint src/
   ```python
   def train_model(config: dict) -> Model:
       """Train a model using the provided configuration.
-      
+
       Args:
           config: Configuration dictionary with 'model' and 'training' keys
-          
+
       Returns:
           Trained Model instance
-          
+
       Raises:
           ValueError: If configuration is invalid
       """
@@ -218,6 +218,7 @@ git commit -m "feat: add dataset inspector tool
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 
 Examples:
+
 - `feat: add dataset inspector tool`
 - `fix: correct device mapping in multi-GPU setup`
 - `docs: improve README with examples`
@@ -261,6 +262,7 @@ Use the PR template on GitHub.
 ### Tips for Successful PRs
 
 ✅ **Do:**
+
 - Write clear commit messages
 - Keep changes focused
 - Add tests for new features
@@ -269,6 +271,7 @@ Use the PR template on GitHub.
 - Respond to feedback promptly
 
 ❌ **Don't:**
+
 - Mix multiple features in one PR
 - Include unrelated changes
 - Skip tests
@@ -304,21 +307,21 @@ from src.module import function
 
 class TestClass:
     """Test cases for MyClass"""
-    
+
     def setup_method(self):
         """Run before each test"""
         self.test_data = sample_data()
-    
+
     def test_basic_functionality(self):
         """Test basic case"""
         result = function(self.test_data)
         assert result.status == "success"
-    
+
     def test_edge_case(self):
         """Test edge case"""
         result = function({})
         assert result is None
-    
+
     def test_error_handling(self):
         """Test error handling"""
         with pytest.raises(ValueError):
@@ -333,6 +336,7 @@ def test_integration():
 ### Coverage
 
 Aim for:
+
 - **Core logic** – 100% coverage
 - **Utilities** – 90%+ coverage
 - **Integration** – Key paths covered
@@ -347,24 +351,24 @@ Aim for:
 ```python
 def train(config: dict) -> Model:
     """Train a model based on configuration.
-    
+
     This function initializes the model, loads data, and runs training
     with the provided hyperparameters.
-    
+
     Args:
         config: Training configuration dictionary with keys:
             - model: Model configuration (name, type, etc.)
             - training: Training parameters (epochs, lr, etc.)
             - dataset: Dataset configuration
-    
+
     Returns:
         Trained model instance ready for inference
-    
+
     Raises:
         ValueError: If configuration is invalid or missing required keys
         FileNotFoundError: If dataset files don't exist
         RuntimeError: If training fails (GPU error, etc.)
-    
+
     Example:
         >>> config = load_yaml('config.yaml')
         >>> model = train(config)
@@ -376,11 +380,11 @@ def train(config: dict) -> Model:
 ### Documentation Files
 
 - **README.md** – Project overview, quick start, basic usage
-- **QUICKSTART.md** – 5-minute setup and first run
+- **docs/QUICKSTART.md** – 5-minute setup and first run
 - **docs/TRAINING_CONFIG.md** – Configuration reference
 - **docs/DATASET_REGISTRY.md** – Dataset registry guide
-- **RELEASE_NOTES.md** – Version history and changes
-- **CONTRIBUTING.md** – This file
+- **docs/RELEASE_NOTES.md** – Version history and changes
+- **docs/CONTRIBUTING.md** – This file
 
 ---
 
@@ -389,7 +393,7 @@ def train(config: dict) -> Model:
 ### For Maintainers
 
 1. Update version number in `src/__init__.py`
-2. Update `RELEASE_NOTES.md` with changes
+2. Update `docs/RELEASE_NOTES.md` with changes
 3. Tag release: `git tag v1.0.0`
 4. Push tag: `git push origin v1.0.0`
 5. GitHub Actions creates release automatically

@@ -208,7 +208,7 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 - **Tools Documentation** → [`tools/README.md`](tools/README.md)
 - **Configuration Reference** → [`docs/TRAINING_CONFIG.md`](docs/TRAINING_CONFIG.md)
 - **Dataset Registry** → [`docs/DATASET_REGISTRY.md`](docs/DATASET_REGISTRY.md)
-- **Contributing** → [`CONTRIBUTING.md`](CONTRIBUTING.md)
+- **Contributing** → [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
 
 ---
 

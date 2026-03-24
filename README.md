@@ -83,14 +83,15 @@ fine-tuning/
 #### Option 1: WSL/Linux (Recommended)
 
 ```bash
-# Clone or navigate to project directory
+# Clone and navigate to project directory
+git clone https://github.com/Cstannahill/fine-tuning-pipeline.git
 cd fine-tuning
 
-# Make setup script executable
-chmod +x setup.sh
+# Create virtual environment
+python -m venv .venv
 
-# Run setup (creates venv and installs dependencies)
-./setup.sh
+# Or using uv
+uv venv .venv --python python3.12 --seed
 
 # Activate environment
 source venv/bin/activate
@@ -604,7 +605,7 @@ torchrun --nproc_per_node=4 main.py --config configs/default.yaml
 - [`docs/DATASET_REGISTRY.md`](docs/DATASET_REGISTRY.md) – Complete dataset registry guide
 - [`docs/TRAINING_CONFIG.md`](docs/TRAINING_CONFIG.md) – All configuration options
 - [`tools/README.md`](tools/README.md) – Tool-specific documentation
-- [`QUICKSTART.md`](QUICKSTART.md) – 5-minute getting started guide
+- [`docs/QUICKSTART.md`](docs/QUICKSTART.md) – 5-minute getting started guide
 
 ---
 
