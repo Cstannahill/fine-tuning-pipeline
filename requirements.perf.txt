@@ -1,0 +1,3 @@
+xformers>=0.0.23  # Optional, for memory-efficient attention
+flash-attn>=2.3.0  # Optional, requires CUDA and specific GPU
+triton>=2.1.0  # Optional, for optimized kernels

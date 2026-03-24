@@ -1,0 +1,136 @@
+# Unsloth Fine-tuning Pipeline Configuration
+
+# Model Configuration
+model:
+  name: "/mnt/s/Code/Models/UC/Qwen3.5/Qwen3.5-0.8B-UC" # Base model to fine-tune
+  max_seq_length: 4096
+  load_in_4bit: true # Set to false for LoRA, true for QLoRA
+  dtype: null # Auto-detect (bfloat16 for Ampere+, float16 otherwise)
+
+# LoRA/QLoRA Configuration
+lora:
+  r: 32 # LoRA rank
+  lora_alpha: 16 # LoRA alpha parameter
+  lora_dropout: 0.05 # Dropout probability
+  bias: "none" # Bias type: "none", "all", "lora_only"
+  target_modules: # Modules to apply LoRA to
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  use_gradient_checkpointing: true
+  random_state: 3407
+  use_rslora: false # Use Rank-Stabilized LoRA
+  loftq_config: null # LoftQ configuration (optional)
+
+# Dataset Configuration
+dataset:
+  # Method 1: Use dataset registry (recommended)
+  # Simply specify the dataset name from dataset_info.json
+  dataset_name: "sonnet35-charcard-roleplay-sharegpt" # Or any dataset from registry
+
+  # Registry path (optional, defaults to dataset_info.json in project root)
+  registry_path: "dataset_info.json"
+
+  # Preprocessing (applies to all methods)
+  max_samples: null # Limit dataset size (null for no limit)
+  shuffle: true
+  seed: 42
+  test_size: 0.1 # Validation split ratio
+# Training Configuration
+training:
+  output_dir: "/mnt/s/Code/Models/fine-tuned/outputs"
+  num_train_epochs: 2
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 2
+  gradient_accumulation_steps: 4
+
+  # Optimization
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.03
+  lr_scheduler_type: "linear" # "linear", "cosine", "constant", etc.
+  optim: "adamw_8bit" # "adamw_8bit", "adamw_torch", "paged_adamw_8bit"
+
+  # Precision
+  fp16: false
+  bf16: false # Auto-set based on GPU capability
+
+  # Logging
+  logging_steps: 10
+  logging_first_step: true
+
+  # Evaluation
+  evaluation_strategy: "steps" # "no", "steps", "epoch"
+  eval_steps: 100
+  save_strategy: "steps"
+  save_steps: 100
+  save_total_limit: 3
+
+  # Performance
+  max_grad_norm: 1.0
+  # group_by_length: true
+  dataloader_num_workers: 4
+  dataloader_pin_memory: true
+  resume_from_checkpoint: false # Add this line
+  # Advanced
+  gradient_checkpointing: true
+  max_steps: -1 # Override num_train_epochs if > 0
+
+  # Unsloth specific
+  use_unsloth: true
+
+# Evaluation Configuration
+evaluation:
+  enabled: true
+  metrics:
+    - "perplexity"
+    - "bleu"
+    - "rouge"
+
+  # Generation settings for evaluation
+  max_new_tokens: 300
+  temperature: 0.7
+  top_p: 0.9
+  do_sample: true
+
+  # Custom evaluation function
+  custom_evaluator: null # Path to custom evaluation function
+
+# Output Configuration
+output:
+  base_dir: "/mnt/s/Code/Models/fine-tuned/outputs"
+  adapter_name: "Qwen3.5-0.8B-UC-Sonnet-RP-Lora"
+  merged_model_name: "Qwen3.5-0.8B-UC-Sonnet-RP-Merged"
+  auto_merge: true # Automatically merge after training
+  push_to_hub: false # Push to HuggingFace Hub
+  hub_model_id: null # HuggingFace model ID
+  hub_token: null # HuggingFace token (or use HF_TOKEN env var)
+
+# Merge Configuration
+merge:
+  dtype: "float16" # Data type for merged model
+  quantization: null # "4bit", "8bit", null
+  device_map: "auto"
+  save_method: "merged_16bit" # "merged_16bit", "merged_4bit", "lora"
+
+# Logging Configuration
+logging:
+  level: "INFO" # "DEBUG", "INFO", "WARNING", "ERROR"
+  log_file: "training.log"
+  tensorboard: true
+  wandb:
+    enabled: false
+    project: "unsloth-finetuning"
+    entity: null
+    name: null # Auto-generated if null
+
+# System Configuration
+system:
+  seed: 42
+  deterministic: false # Enable for reproducibility (may reduce speed)
+  gpu_ids: null # List of GPU IDs to use (null for all available)
+  mixed_precision: "auto" # "auto", "fp16", "bf16", "no"
