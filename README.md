@@ -29,8 +29,6 @@ fine-tuning/
 │
 ├── configs/
 │   ├── default.yaml           # Default training configuration
-│   ├── default-qwen35-full.yaml
-│   ├── default-examples.yaml
 │   └── ...
 │
 ├── src/
